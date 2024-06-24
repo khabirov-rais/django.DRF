@@ -1,27 +1,26 @@
 # TODO: опишите необходимые обработчики, рекомендуется использовать generics APIView классы:
 # TODO: ListCreateAPIView, RetrieveUpdateAPIView, CreateAPIView
 from .models import Sensor, Measurement
-from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateAPIView, CreateAPIView
-from .serializers import SensorSerializer, MeasurementSerializer, OneSensorSerializer
+from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView
+from .serializers import SensorDetailSerializer, MeasurementSerializer, SensorChangeSerializer
 
-class SensorView(ListCreateAPIView):
+# получить\создать датчик
+class SensorsListCreateView(ListCreateAPIView):
     queryset = Sensor.objects.all()
-    serializer_class = OneSensorSerializer
+    serializer_class = SensorDetailSerializer
 
-    def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
-
-
-class MeasurementView(ListCreateAPIView):
+# добавить\посмотреть измерения
+class MeasurementCreateView(ListCreateAPIView):
     queryset = Measurement.objects.all()
     serializer_class = MeasurementSerializer
 
-    def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
-
-class OneSensorView(RetrieveUpdateAPIView):
+# обновить инфу по датчику
+class SensorChangeView(UpdateAPIView):
     queryset = Sensor.objects.all()
-    serializer_class = SensorSerializer
+    serializer_class = SensorChangeSerializer
 
-    def partial_update(self, request, *args, **kwargs):
-        return super().partial_update(request, *args, **kwargs)
+# получить инфу по датчику
+class SensorView(RetrieveAPIView):
+    queryset = Sensor.objects.all()
+    serializer_class = SensorDetailSerializer
+
